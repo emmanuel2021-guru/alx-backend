@@ -44,6 +44,10 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """
+        This function paginates a dataset and returns the appropriate
+        page of the dataset(i.e. the correct list of rows)
+        """
         if type(page) is not int:
             assert type(page) is int, AssertionError
         if type(page_size) is not int:
@@ -52,10 +56,10 @@ class Server:
             assert page > 0, AssertionError
         if page_size <= 0:
             assert page_size > 0, AssertionError
-        index = index_range(page, page_size)
         with open('Popular_Baby_Names.csv', newline='') as my_csv:
             parsed_data = list(csv.reader(my_csv, delimiter=','))
-            csv_index = (int(index[0]) + 1, int(index[1]) + 1)
+            index = index_range(page, page_size)
+            csv_index = (index[0] + 1, index[1] + 1)
             new_list = []
             if (csv_index[1] < len(parsed_data)):
                 for i in range(csv_index[0], csv_index[1]):

@@ -7,7 +7,7 @@ indexes to return a list for those particular pagination parameters
 """
 
 
-def index_range(page, page_size):
+def index_range(page: int, page_size: int) -> tuple:
     """
     This function returns a tuple containing a start index and an end
     index corresponding to the range of indexes to return a list for

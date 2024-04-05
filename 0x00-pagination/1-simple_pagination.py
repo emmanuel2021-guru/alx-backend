@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-
+This module demonstrates simple pagination
 """
 
 
@@ -56,7 +56,7 @@ class Server:
             assert page > 0, AssertionError
         if page_size <= 0:
             assert page_size > 0, AssertionError
-        with open('Popular_Baby_Names.csv', newline='') as my_csv:
+        with open(self.DATA_FILE, newline='') as my_csv:
             parsed_data = list(csv.reader(my_csv, delimiter=','))
             index = index_range(page, page_size)
             csv_index = (index[0] + 1, index[1] + 1)

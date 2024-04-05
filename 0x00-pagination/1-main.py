@@ -9,6 +9,7 @@ server = Server()
 
 try:
     should_err = server.get_page(-10, 2)
+    server.dataset
 except AssertionError:
     print("AssertionError raised with negative values")
 

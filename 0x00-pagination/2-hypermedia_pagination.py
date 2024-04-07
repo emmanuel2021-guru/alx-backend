@@ -56,15 +56,13 @@ class Server:
             assert page > 0, AssertionError
         if page_size <= 0:
             assert page_size > 0, AssertionError
-        with open(self.DATA_FILE, newline='') as my_csv:
-            parsed_data = list(csv.reader(my_csv, delimiter=','))
-            index = index_range(page, page_size)
-            csv_index = (index[0] + 1, index[1] + 1)
-            new_list = []
-            if (csv_index[1] < len(parsed_data)):
-                for i in range(csv_index[0], csv_index[1]):
-                    new_list.append(parsed_data[i])
-            return new_list
+        dataset = self.dataset()
+        index = index_range(page, page_size)
+        if index[1] < len(dataset):
+            page_list = [dataset[i] for i in range(index[0], index[1])]
+        else:
+            page_list = []
+        return page_list
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
         """
@@ -77,14 +75,13 @@ class Server:
         - prev_page: number of the previous page, None if no previous page
         - total_pages: the total number of pages in the dataset as an integer
         """
-        with open(self.DATA_FILE, newline='') as my_csv:
-            parsed_data = list(csv.reader(my_csv, delimiter=','))
+        parsed_data = self.dataset()
 
         if ((len(parsed_data) - 1) % page_size) == 0:
-            total_pages = (len(parsed_data) - 1) / page_size
+            total_pages = math.trunc((len(parsed_data) - 1) / page_size)
         else:
-            total_pages = ((len(parsed_data) - 1) / page_size) + 1
-        if page <= total_pages:
+            total_pages = math.trunc(((len(parsed_data) - 1) / page_size) + 1)
+        if page < total_pages:
             next_page = page + 1
         else:
             next_page = None
@@ -99,5 +96,5 @@ class Server:
             'data': self.get_page(page, page_size),
             'next_page': next_page,
             'prev_page': prev_page,
-            'total_pages': math.trunc(total_pages)
+            'total_pages': total_pages
         }

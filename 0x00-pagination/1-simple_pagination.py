@@ -56,12 +56,10 @@ class Server:
             assert page > 0, AssertionError
         if page_size <= 0:
             assert page_size > 0, AssertionError
-        with open(self.DATA_FILE, newline='') as my_csv:
-            parsed_data = list(csv.reader(my_csv, delimiter=','))
-            index = index_range(page, page_size)
-            csv_index = (index[0] + 1, index[1] + 1)
-            new_list = []
-            if (csv_index[1] < len(parsed_data)):
-                for i in range(csv_index[0], csv_index[1]):
-                    new_list.append(parsed_data[i])
-            return new_list
+        dataset = self.dataset()
+        index = index_range(page, page_size)
+        if index[1] < len(dataset):
+            page_list = [dataset[i] for i in range(index[0], index[1])]
+        else:
+            page_list = []
+        return page_list
